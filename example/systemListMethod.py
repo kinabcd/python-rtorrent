@@ -3,6 +3,6 @@
 
 # Author: Kin Lo <kinabcd@gmail.com>
 
-from rtorrent.remotecontrol import RemoteControl
-rtctl = RemoteControl()
+import rtorrent
+rtctl = rtorrent.RemoteControl()
 print(rtctl.systemlistMethod())

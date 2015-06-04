@@ -4,11 +4,13 @@
 # Author: Kin Lo <kinabcd@gmail.com>
 from rtorrent import scgi
 from rtorrent import xmlrpc
+
 class RemoteControl:
     def __init__(self, host='localhost', port=5000, path = '/'):
         self.host = host
         self.port = port
         self.path = path
+            
 
     def sendCall(self, methodName, params = []):
         if not isinstance(params,list): params = [params]
@@ -17,9 +19,9 @@ class RemoteControl:
         for param in params:
             x.addParam(param)
         data = str(x)
-        response = scgi.request(socket=socket, method="GET", uri=self.path, data=data.encode('utf8'))
+        result = scgi.request(socket=socket, method="GET", uri=self.path, data=data.encode('utf8'))
         socket.close()
-        return response
+        return xmlrpc.parse(result['body'])
     
     def load(self, uri, start =True):
         return self.sendCall('load_start' if start else 'load', uri)

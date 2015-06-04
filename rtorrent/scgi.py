@@ -99,8 +99,12 @@ def request(socket, data=None, **kwargs):
         ns = ns.encode('ascii')
     socket.sendall(ns)
     if data:
-        socket.sendall(data)    
-    return recvall(socket)
+        socket.sendall(data)
+    response = recvall(socket);
+    if response is not None:
+        (head, body) = response.decode('UTF-8').split('\r\n\r\n',1)
+        return {'head':head, 'body':body }
+    return {'head':'', 'body':'' }
 
 
 if __name__ == '__main__':
